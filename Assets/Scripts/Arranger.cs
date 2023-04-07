@@ -7,13 +7,30 @@ public class Arranger : MonoBehaviour
     public static bool mouseButtonReleased = true;
     private RaycastHit2D hit;
 
-    //Фушкция, осуществляющая посик слота под бъектом
-    //Возвращает: компонент Transform этого слота или null
-    public Transform CheckClot()
+
+    //Основная функция
+    //Вызавает функцию вставляющую предмет в слот
+    //Передаёт в нее результат выполнения функции поиска слота под объектом
+    public void PlaceObject()
     {
+        Transform slotTransform = FindSlot();
+        if(slotTransform)
+            InserteInSlot(FindSlot());
+    }
+
+    //Фушкция, осуществляющая посик слота под бъектом
+    //Возвращает: компонент Transform найденного слота или значение null
+    public Transform FindSlot()
+    {
+        //Застовляем предмет игнорировать рейкаст
         gameObject.layer = 2;
         hit = Physics2D.Raycast(transform.position, -Vector2.up);
+
+        //Отменяем игнор рейкаста
         gameObject.layer = 0;
+
+        //Если во что-то попали и если это что-то - слот, возвращаем Transform этого слота
+        //Иначе возвращаем значение null
         return hit && (hit.transform.tag == "Slot") ? hit.transform : null;
     }
 
@@ -26,8 +43,7 @@ public class Arranger : MonoBehaviour
     public void OnMouseUp()
     {
         mouseButtonReleased = true;
-        Transform slot = CheckClot();
-        if (slot) InserteInSlot(slot);
+        PlaceObject();
     }
 
     private void InserteInSlot(Transform slot)
@@ -35,17 +51,11 @@ public class Arranger : MonoBehaviour
         transform.position = slot.position;
     }
 
-    void Start()
-    {
-        CheckClot();
-    }
+    //Позиционитруем объект каждый фрейм
+    //чтобы избежать блуждания объекта
     void Update()
     {
         if (mouseButtonReleased)
-        {
-            Transform slot = CheckClot();
-            if (slot) InserteInSlot(slot);
-        }
-
+            PlaceObject();
     }
 }
