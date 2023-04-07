@@ -366,7 +366,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1319589730}
   - {fileID: 549795460}
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -545,8 +544,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90ef09d4d39cc44286f7f7c8da9b762, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &1319589730 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6422621156389015875, guid: 94b4da62e1e5c02458c8acf34593d5af, type: 3}
-  m_PrefabInstance: {fileID: 1319589724}
-  m_PrefabAsset: {fileID: 0}

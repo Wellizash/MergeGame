@@ -24,7 +24,6 @@ public class TargetPanel : MonoBehaviour
 
     public void TargetEvent(Targetable NewTargetItem)
     {
-        Debug.Log("TargetEvent");
         if(NewTargetItem.GetComponent<Requestable>())
         {
             _requestEvent.GetComponent<Button>().interactable = true;
