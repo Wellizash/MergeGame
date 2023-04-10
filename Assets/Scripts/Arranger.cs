@@ -6,6 +6,7 @@ public class Arranger : MonoBehaviour
 {
     public static bool mouseButtonReleased = true;
     private RaycastHit2D hit;
+    private Vector2 basePos;
 
 
     //Основная функция
@@ -14,8 +15,10 @@ public class Arranger : MonoBehaviour
     public void PlaceObject()
     {
         Transform slotTransform = FindSlot();
-        if(slotTransform)
-            InserteInSlot(FindSlot());
+        if (slotTransform)
+            InserteInSlot(slotTransform);
+        else
+            transform.position = basePos;
     }
 
     //Фушкция, осуществляющая посик слота под бъектом
@@ -38,6 +41,7 @@ public class Arranger : MonoBehaviour
     public void OnMouseDown()
     {
         mouseButtonReleased = false;
+        basePos = transform.position;
     }
 
     public void OnMouseUp()
@@ -49,6 +53,12 @@ public class Arranger : MonoBehaviour
     private void InserteInSlot(Transform slot)
     {
         transform.position = slot.position;
+        basePos = transform.position;
+    }
+
+    private void Start()
+    {
+        basePos = transform.position;
     }
 
     //Позиционитруем объект каждый фрейм
