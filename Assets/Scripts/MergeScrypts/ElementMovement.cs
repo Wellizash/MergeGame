@@ -15,20 +15,34 @@ public class ElementMovement : Movement
     private SpriteRenderer spriteCollisionObj;
     public MergeContainer mergeContainerSO;
     
-    private void OnTriggerStay2D(Collider2D collision)
+    public bool Merge(Transform mergeItem)
     {
         spriteGameObj = GetComponentInChildren<SpriteRenderer>();
-        spriteCollisionObj = collision.GetComponentInChildren<SpriteRenderer>();
-        
-        if (!(spriteGameObj && spriteCollisionObj))
-            return;
+        spriteCollisionObj = mergeItem.GetComponentInChildren<SpriteRenderer>();
 
-        if (mouseButtonReleased && spriteGameObj.sprite == spriteCollisionObj.sprite)
+
+
+        if (!(spriteGameObj && spriteCollisionObj))
+            return false;
+
+        if (mouseButtonReleased && spriteGameObj.sprite == spriteCollisionObj.sprite && mergeItem.transform != transform)
         {
+            Debug.Log("Merge: " + transform.name + " and " + mergeItem.name);
             numberPosition += 1;
             spriteGameObj.sprite = mergeContainerSO.mergeSprites[numberPosition];
             mouseButtonReleased = false;
-            Destroy(collision.gameObject);
+            Destroy(mergeItem.gameObject);
+            return true;
         }
+        else
+            return false;
+    }
+
+
+
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        //Merge(collision.transform);
     }
 }
