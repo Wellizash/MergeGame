@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class MainGrid : MonoBehaviour
 {
-    public void inserteItem(Slot mSlot, Transform item)
-    {
-
-    }
-
+    public List<Transform> slots;
 
     void Start()
     {
-        
+        foreach (Transform child in transform)
+            slots.Add(child);
     }
 
 

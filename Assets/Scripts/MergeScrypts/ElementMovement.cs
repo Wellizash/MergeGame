@@ -18,6 +18,7 @@ public class ElementMovement : Movement
 
     private void OnTriggerStay2D(Collider2D collision)
     {
+
         if (collision.transform.GetComponent<Arranger>() == null)
             return;
 
