@@ -67,6 +67,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4910b179d5cd4284e8d54c6f6f47cb59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 1416725663106446295, guid: 3682ad9dba337994ca3a2fcbbefc6caf, type: 3}
+  dispenderDataConainer: {fileID: 11400000, guid: 4740b8cb6f544a2478452493f24adc4d, type: 2}
 --- !u!114 &800605904078982530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +175,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6efe262ddfdb6cd4696b3694cf4ea296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mouseReleased: 0
+  mSlot: {fileID: 0}
 --- !u!114 &2886743118339297260
 MonoBehaviour:
   m_ObjectHideFlags: 0

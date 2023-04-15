@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6398bb2c10f5b95418bf5bebd07ed435, type: 3}
-  m_Name: MergeData
+  m_Name: MergeData1
   m_EditorClassIdentifier: 
   mergeSprites:
   - {fileID: 278639502, guid: f533515b52d45274490d95fcb0ccd970, type: 3}

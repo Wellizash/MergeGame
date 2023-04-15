@@ -31,7 +31,6 @@ public class ElementMovement : Movement
             }
         }
 
-        
         spriteGameObj = transform.GetComponentInChildren<SpriteRenderer>();
         spriteCollisionObj = collision.transform.GetComponentInChildren<SpriteRenderer>();
 
@@ -54,7 +53,20 @@ public class ElementMovement : Movement
 
     private void Start()
     {
+        numberPosition = 0;
         arranger = GetComponent<Arranger>();
     }
+
+
+    public void SetMergeContainer(MergeContainer newNergeContainer)
+    {
+        spriteGameObj = transform.GetComponentInChildren<SpriteRenderer>();
+        mergeContainerSO = newNergeContainer;
+        spriteGameObj.sprite = mergeContainerSO.mergeSprites[numberPosition];
+    }
+
+
+
+
 
 }
