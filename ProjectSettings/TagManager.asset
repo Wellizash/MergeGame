@@ -46,8 +46,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Ittems
+  - name: Items
     uniqueID: 2302068379
+    locked: 0
+  - name: DruggingItems
+    uniqueID: 963138313
     locked: 0
   - name: Ui
     uniqueID: 4019519901

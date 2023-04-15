@@ -14,35 +14,47 @@ public class ElementMovement : Movement
     private SpriteRenderer spriteGameObj;
     private SpriteRenderer spriteCollisionObj;
     public MergeContainer mergeContainerSO;
-    
-    public bool Merge(Transform mergeItem)
-    {
-        spriteGameObj = GetComponentInChildren<SpriteRenderer>();
-        spriteCollisionObj = mergeItem.GetComponentInChildren<SpriteRenderer>();
-
-
-
-        if (!(spriteGameObj && spriteCollisionObj))
-            return false;
-
-        if (mouseButtonReleased && spriteGameObj.sprite == spriteCollisionObj.sprite && mergeItem.transform != transform)
-        {
-            Debug.Log("Merge: " + transform.name + " and " + mergeItem.name);
-            numberPosition += 1;
-            spriteGameObj.sprite = mergeContainerSO.mergeSprites[numberPosition];
-            mouseButtonReleased = false;
-            Destroy(mergeItem.gameObject);
-            return true;
-        }
-        else
-            return false;
-    }
-
-
-
+    private Arranger arranger;
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        //Merge(collision.transform);
+        if (collision.transform.GetComponent<Arranger>() == null)
+            return;
+
+
+        if(collision.transform.GetComponent<Arranger>() != null)
+        {
+            if (collision.transform.GetComponent<ElementMovement>() == null)
+            {
+                collision.transform.GetComponent<Arranger>().goBase();
+                return;
+            }
+        }
+
+        
+        spriteGameObj = transform.GetComponentInChildren<SpriteRenderer>();
+        spriteCollisionObj = collision.transform.GetComponentInChildren<SpriteRenderer>();
+
+
+        if (!(spriteGameObj && spriteCollisionObj))
+        {
+            collision.transform.GetComponent<Arranger>().goBase();
+            return;
+        }
+
+        if (mouseButtonReleased && spriteGameObj.sprite == spriteCollisionObj.sprite && collision.transform != transform)
+        {
+            numberPosition += 1;
+            spriteGameObj.sprite = mergeContainerSO.mergeSprites[numberPosition];
+            mouseButtonReleased = false;
+            Destroy(collision.gameObject);
+        }
     }
+
+
+    private void Start()
+    {
+        arranger = GetComponent<Arranger>();
+    }
+
 }

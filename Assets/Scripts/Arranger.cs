@@ -1,104 +1,79 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Arranger : MonoBehaviour
 {
-    public static bool mouseButtonReleased = true;
     private RaycastHit2D hit;
     private Vector2 basePos;
+    private ElementMovement elementMovement;
+    public bool mouseReleased;
+    private SortingGroup sortingGroup;
+    [SerializeField] private Transform mSlot;
 
-    //Основная функция
-    //Вызавает функцию вставляющую предмет в слот
-    //Передаёт в нее результат выполнения функции поиска слота под объектом
-    public void PlaceObject()
+
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (mouseButtonReleased)
-        {
-            Transform slotTransform = FindSlot();
-            if (slotTransform)
-            {
-                if (slotTransform.childCount == 0)
-                    InserteInSlot(slotTransform);
-                else
-                {
-                    if(slotTransform.transform.GetChild(0).GetComponent<ElementMovement>().Merge(transform))
-                        return;
-                    else
-                        transform.position = basePos;
-                }    
-            }
-            else
-            {
-                hit = Physics2D.Raycast(transform.position, -Vector2.up);
-                if (hit.transform && hit.transform.GetComponent<ElementMovement>())
-                {
-                    if (!hit.transform == transform) { return; }
-                    hit.transform.GetComponent<ElementMovement>().Merge(transform);
-                    return;
-                }
-                else
-                    transform.position = basePos;
-            }
-        }
+        //если при отпушенной кномке мыши происходит столкновение
+        //не со слотои и не с предметом возвращаемся в базовую точку
+        //стлкновения со слотом обрабаитываются в слоте
+        //с объектом - в element movement; 
+        if (collision.transform.GetComponent<Arranger>() == null && collision.transform.GetComponent<Slot>() == null)
+            goBase();
     }
-
-    //Фушкция, осуществляющая посик слота под бъектом
-    //Возвращает: компонент Transform найденного слота или значение null
-    public Transform FindSlot()
-    {
-        //Застовляем предмет игнорировать рейкаст
-
-        hit = Physics2D.Raycast(transform.position, -Vector2.up);
-
-        //Отменяем игнор рейкаста
-
-
-        //Если во что-то попали и если это что-то - слот, возвращаем Transform этого слота
-        //Иначе возвращаем значение null
-        return hit && (hit.transform.tag == "Slot") ? hit.transform : null;
-    }
-
 
     public void OnMouseDown()
     {
-        gameObject.layer = 2;
-        mouseButtonReleased = false;
+        //перемешаем объект в очереди отривовки
+        sortingGroup.sortingLayerID = SortingLayer.NameToID("DruggingItems");
+
+        //отключаем столкновение
+        transform.GetComponent<BoxCollider2D>().isTrigger = false;
+
+        //устанавливаем базовую точку
         basePos = transform.position;
+
+        mouseReleased = false;
     }
 
     public void OnMouseUp()
     {
-        mouseButtonReleased = true;
-        PlaceObject();
-        gameObject.layer = 0;
+        sortingGroup.sortingLayerID = SortingLayer.NameToID("Items");
+        transform.GetComponent<BoxCollider2D>().isTrigger = true;
+        mouseReleased = true;
     }
 
-    private void InserteInSlot(Transform slot)
+    public void InserteInSlot(Transform slot)
     {
-        transform.position = slot.position;
-        basePos = transform.position;
+        //не вставляемся в свой же слот(на всякий)
+        if(mSlot == slot)
+            return;
+
+        //делаем ссылку на содержимое старого слолта равным null
+        if (mSlot)
+            mSlot.GetComponent<Slot>().content = null;
+
+        //устанавливаем ссылку на этот предмет в качестве ссылки на содержимое нового слота
+        slot.GetComponent<Slot>().content = transform;
+
+        //устонгавливает новый слот вместо старого
+        mSlot = slot;
+
+        //устанавливаем базовую точку и отправляемся в неё
+        basePos = mSlot.position;
+        goBase();
     }
 
-    private void Awake()
+    public void goBase()
     {
-        gameObject.layer = 2;
+        transform.position = basePos;
     }
-
-
 
     private void Start()
     {
+        sortingGroup = GetComponent<SortingGroup>();
+        elementMovement = GetComponent<ElementMovement>();
         basePos = transform.position;
-        PlaceObject();
-        gameObject.layer = 0;
-    }
-
-    //Позиционитруем объект каждый фрейм
-    //чтобы избежать блуждания объекта
-    void Update()
-    {
-
-        PlaceObject();
     }
 }
