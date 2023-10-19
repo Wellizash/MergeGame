@@ -10,8 +10,10 @@ public class Dispenser : MonoBehaviour
     public void Request()
     {
         Transform newItem = Instantiate(itemPrefab, transform.position, transform.rotation);
-
-        int mergeContainerIndex = Random.Range(0, dispenderDataConainer.dispenderDataContainerList.Count);
+        newItem.SetParent(transform.parent);
+        newItem.position = transform.position;
+        newItem.localScale = transform.localScale;
+        int mergeContainerIndex = Random.Range(0, dispenderDataConainer.dispenderDataContainerList.Count - 1);
         MergeContainer newMergeConteiner = dispenderDataConainer.dispenderDataContainerList[mergeContainerIndex];      
 
         ElementMovement newItemElementMovement =  newItem.GetComponent<ElementMovement>();
